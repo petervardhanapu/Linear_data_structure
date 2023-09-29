@@ -1,0 +1,59 @@
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+
+    def size(self):
+        return len(self.items)
+
+
+class MinStack:
+    def __init__(self):
+        self.main_stack = Stack()
+        self.min_stack = Stack()
+
+    def push(self, item):
+        self.main_stack.push(item)
+
+        # If the min_stack is empty or the item is smaller than or equal to the current minimum, push it onto the min_stack.
+        if self.min_stack.is_empty() or item <= self.min_stack.peek():
+            self.min_stack.push(item)
+
+    def pop(self):
+        if not self.main_stack.is_empty():
+            # If the item being popped from the main_stack is the current minimum, pop it from the min_stack as well.
+            if self.main_stack.peek() == self.min_stack.peek():
+                self.min_stack.pop()
+            return self.main_stack.pop()
+
+    def get_min(self):
+        if not self.min_stack.is_empty():
+            return self.min_stack.peek()
+
+
+# Create a MinStack
+min_stack = MinStack()
+
+# Push elements onto the MinStack
+min_stack.push(4)
+min_stack.push(2)
+min_stack.push(7)
+min_stack.push(1)
+min_stack.push(8)
+
+# Find the minimum element
+minimum = min_stack.get_min()
+print("Minimum element:", minimum)
